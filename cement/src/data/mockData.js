@@ -25,12 +25,28 @@ export const RECENT_ACTIVITIES = [
 
 export const LANDING_FAQS = [
   {
-    q: 'What is Family Legacy?',
-    a: 'It is a private digital archive for preserving family stories, photos, and milestones.'
+    question: 'What is Family Legacy?',
+    answer: 'Family Legacy is a secure digital archive for preserving family stories, photos, documents, and genealogy. It helps families keep records organized and accessible across generations.'
   },
   {
-    q: 'Can I invite my relatives?',
-    a: 'Yes. The community area is designed for close-knit family collaboration.'
+    question: 'How do I get started?',
+    answer: 'Create a free account, start a family tree, upload photos and documents, then invite relatives so they can contribute stories and memories.'
+  },
+  {
+    question: 'Can relatives contribute to the archive?',
+    answer: 'Yes, relatives can join a family group, add memories, share photos, and update timelines while access controls keep the archive private.'
+  },
+  {
+    question: 'Is my family data private?',
+    answer: 'Absolutely. Family Legacy is designed around privacy and secure sharing, with permission controls for documents, media, and family connections.'
+  },
+  {
+    question: 'What features are included?',
+    answer: 'You get family tree building, timeline creation, memorial walls, AI image search, community chat, and secure document storage in one platform.'
+  },
+  {
+    question: 'Where can I find help?',
+    answer: 'Use the FAQ page for common questions, or reach out via the footer links for support, privacy, and account assistance.'
   }
 ];
 
