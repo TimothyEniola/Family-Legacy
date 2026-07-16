@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Archivo:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-body bg-white text-slate-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-dark-bg text-slate-100;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/45 backdrop-blur-xl border border-white/20 shadow-glass;
+  }
+
+  .dark .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .btn-primary {
+    @apply px-6 py-2.5 bg-primary text-white rounded-full font-bold shadow-lg shadow-primary/20 hover:bg-primary-600 transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2.5 border-2 border-slate-200 dark:border-dark-border dark:text-white rounded-full font-bold hover:bg-slate-50 dark:hover:bg-dark-surface transition-all active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .card-premium {
+    @apply bg-white dark:bg-dark-card border border-slate-100 dark:border-dark-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-all;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-slate-400 dark:hover:bg-slate-600;
+}
