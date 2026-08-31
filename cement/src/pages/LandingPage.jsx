@@ -21,7 +21,7 @@ export default function LandingPage() {
     <div className="bg-white text-slate-900 dark:bg-[#0F172A] dark:text-slate-100 min-h-screen selection:bg-primary selection:text-white transition-colors duration-300 pt-6">
       <section className="relative pt-20 pb-20 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
-
+  
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}

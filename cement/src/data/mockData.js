@@ -4,6 +4,37 @@ export const CURRENT_USER = {
   avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'
 };
 
+export const FAMILY_GROUPS = [
+  {
+    id: 'johnson-family',
+    name: 'Johnson Family',
+    surname: 'Johnson',
+    country: 'Nigeria',
+    state: 'Lagos',
+    town: 'Ikeja',
+    logo: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=200',
+    motto: 'Our roots, our future.',
+    about: 'A multigenerational family of educators, storytellers, and community organizers preserving our legacy together.',
+    memberIds: ['david-johnson', 'william-johnson', 'linda-johnson', 'robert-johnson', 'mary-johnson', 'olivia-johnson'],
+    publicMembersCount: 6,
+    isPublic: true
+  },
+  {
+    id: 'adaeze-family',
+    name: 'Adaeze Family',
+    surname: 'Adaeze',
+    country: 'Ghana',
+    state: 'Greater Accra',
+    town: 'Accra',
+    logo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
+    motto: 'Strength in shared stories.',
+    about: 'A growing family network focused on tradition, education, and the power of collective memory.',
+    memberIds: [],
+    publicMembersCount: 3,
+    isPublic: true
+  }
+];
+
 export const RECENT_ACTIVITIES = [
   {
     id: 1,
@@ -20,6 +51,66 @@ export const RECENT_ACTIVITIES = [
     detail: 'A memory of his guidance',
     time: '1h ago',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200'
+  }
+];
+
+export const INITIAL_ANNOUNCEMENTS = [
+  {
+    id: 1,
+    familyId: 'johnson-family',
+    familyName: 'Johnson Family',
+    title: 'Family Reunion 2026',
+    date: 'June 15, 2026',
+    type: 'Reunion',
+    priority: 'High',
+    content: 'We are thrilled to announce that the biennial Johnson family reunion will be held in Lagos this year. Mark your calendars for July 20-25!',
+    icon: 'Calendar',
+    color: 'bg-orange-500'
+  },
+  {
+    id: 2,
+    familyId: 'johnson-family',
+    familyName: 'Johnson Family',
+    title: 'New Baby Welcome',
+    date: 'June 10, 2026',
+    type: 'New Baby',
+    priority: 'Medium',
+    content: 'Welcome baby Ayo to the family! Share your messages of love and blessings in the family hub.',
+    icon: 'Baby',
+    color: 'bg-blue-500'
+  },
+  {
+    id: 3,
+    familyId: 'johnson-family',
+    familyName: 'Johnson Family',
+    title: 'Emergency Response Drill',
+    date: 'June 05, 2026',
+    type: 'Emergency Notice',
+    priority: 'Normal',
+    content: 'The family emergency response plan has been updated. Please review the new procedures in the emergency section.',
+    icon: 'ShieldCheck',
+    color: 'bg-red-500'
+  }
+];
+
+export const INITIAL_NOTIFICATIONS = [
+  {
+    id: 1,
+    type: 'announcement',
+    title: 'New family announcement posted',
+    message: 'Family Reunion 2026 has been published for the Johnson Family.',
+    date: 'Just now',
+    read: false,
+    route: '/announcements'
+  },
+  {
+    id: 2,
+    type: 'match',
+    title: 'Possible face match found',
+    message: 'A photo upload may match Olivia Johnson. Review the match in Search.',
+    date: '5m ago',
+    read: false,
+    route: '/search'
   }
 ];
 
