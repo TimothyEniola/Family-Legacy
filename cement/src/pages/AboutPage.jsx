@@ -1,4 +1,3 @@
-import React from 'react';
 import { GitFork } from 'lucide-react';
 
 export default function AboutPage() {

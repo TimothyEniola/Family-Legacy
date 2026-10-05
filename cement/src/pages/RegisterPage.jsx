@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GitFork, Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';

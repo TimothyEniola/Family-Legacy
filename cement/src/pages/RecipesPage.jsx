@@ -1,4 +1,3 @@
-import React from 'react';
 import { Utensils, Search, Plus, Filter, Heart, Clock, Users, ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 

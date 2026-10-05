@@ -1,7 +1,10 @@
+export const isFamilyAdmin = (user = CURRENT_USER) => user?.role === 'Super Admin' || user?.role === 'Family Founder';
+
 export const CURRENT_USER = {
   name: 'David Johnson',
-  role: 'Family Archivist',
-  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'
+  role: 'Family Founder',
+  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+  email: 'david.johnson@familylegacy.example'
 };
 
 export const FAMILY_GROUPS = [
@@ -35,6 +38,43 @@ export const FAMILY_GROUPS = [
   }
 ];
 
+export const INITIAL_FAMILY_POSTS = [
+  {
+    id: 'post-johnson-reunion',
+    familyId: 'johnson-family',
+    familyName: 'Johnson Family',
+    authorName: 'David Johnson',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+    kind: 'status',
+    body: 'The family reunion is coming together. I can’t wait to see everyone and hear the stories we have been collecting.',
+    createdAt: 'Today · 9:42 AM',
+    reactions: { heart: 18, comments: 4 }
+  },
+  {
+    id: 'post-adaeze-market',
+    familyId: 'adaeze-family',
+    familyName: 'Adaeze Family',
+    authorName: 'Ama Adaeze',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
+    kind: 'post',
+    body: 'Sharing a little piece of our family’s Saturday market tradition. Three generations, one recipe notebook, and a lot of laughter.',
+    imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=1000',
+    createdAt: 'Yesterday · 4:18 PM',
+    reactions: { heart: 32, comments: 7 }
+  },
+  {
+    id: 'post-johnson-memory',
+    familyId: 'johnson-family',
+    familyName: 'Johnson Family',
+    authorName: 'Linda Johnson',
+    authorAvatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=200',
+    kind: 'memory',
+    body: 'Found this note in Mother’s recipe book: “A meal tastes better when there is room at the table for one more.” Keeping that tradition alive.',
+    createdAt: 'Monday · 11:06 AM',
+    reactions: { heart: 24, comments: 3 }
+  }
+];
+
 export const RECENT_ACTIVITIES = [
   {
     id: 1,
@@ -52,6 +92,25 @@ export const RECENT_ACTIVITIES = [
     time: '1h ago',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200'
   }
+];
+
+export const DOCUMENT_CATEGORIES = [
+  'Property Deeds',
+  'Birth Certificates',
+  'Death Certificates',
+  'Marriage Records',
+  'Historical Letters',
+  'Family Tree',
+  'Legal Records',
+  'Medical Records',
+  'Other'
+];
+
+export const INITIAL_DOCUMENTS = [
+  { id: 'doc-deed-1952', name: '1952 Ebute Metta Deed', category: 'Property Deeds', sizeBytes: 12582912, date: '1952-06-15', type: 'PDF', description: 'An ancestral property record.' },
+  { id: 'doc-marriage-1970', name: 'William & Linda Marriage', category: 'Marriage Records', sizeBytes: 2516582, date: '1970-09-21', type: 'JPG', description: 'Marriage record for William and Linda Johnson.' },
+  { id: 'doc-letter-1944', name: 'Ancestral Letter — Robert', category: 'Historical Letters', sizeBytes: 870400, date: '1944-01-10', type: 'PDF', description: 'A letter preserved from the family archive.' },
+  { id: 'doc-tree-vol-1', name: 'Family Tree Volume 1', category: 'Family Tree', sizeBytes: 47185920, date: '2023-12-20', type: 'EBOOK', description: 'First volume of the family tree archive.' }
 ];
 
 export const INITIAL_ANNOUNCEMENTS = [
@@ -146,12 +205,18 @@ export const GALLERY_ITEMS = [
     id: 1,
     title: 'Grandma at the Market',
     image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=600',
+    url: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=600',
+    type: 'photo',
+    category: 'history',
     date: '1984'
   },
   {
     id: 2,
     title: 'Wedding Day',
     image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600',
+    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600',
+    type: 'photo',
+    category: 'weddings',
     date: '1975'
   }
 ];

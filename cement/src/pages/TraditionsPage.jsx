@@ -1,5 +1,4 @@
-import React from 'react';
-import { Landmark, Search, Plus, Filter, Sparkles, Music, Gift, Heart, ArrowRight } from 'lucide-react';
+import { Landmark, Plus, Sparkles, Music, Gift, Heart, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function TraditionsPage() {

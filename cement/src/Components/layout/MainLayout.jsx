@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X, Bell, Search, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useFamily } from '../../context/FamilyContext';
 
 export default function MainLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { theme, toggleTheme } = useTheme();
+  const { notifications } = useFamily();
+  const unreadCount = notifications.filter((notification) => !notification.read).length;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -108,9 +111,14 @@ export default function MainLayout() {
               />
             </form>
 
-            <button className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-primary transition-colors relative group">
+            <button
+              type="button"
+              onClick={() => navigate('/notifications')}
+              aria-label="Open notifications"
+              className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-primary transition-colors relative group"
+            >
               <Bell size={20} />
-              <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary rounded-full border-2 border-white dark:border-[#0F172A]"></span>
+              {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-primary px-1 text-[9px] font-black text-white dark:border-[#0F172A]">{unreadCount > 9 ? '9+' : unreadCount}</span>}
             </button>
 
             <button 

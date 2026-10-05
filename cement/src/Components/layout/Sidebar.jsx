@@ -1,17 +1,14 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
-import { CURRENT_USER } from '../../data/mockData';
+import { CURRENT_USER, isFamilyAdmin } from '../../data/mockData';
 import { 
-  LayoutDashboard, GitFork, BookOpen, Users, Image, Calendar, 
-  Heart, Compass, Search, Settings, Sun, Moon, LogOut, 
-  MessageSquare, Bell, Shield, FileText, Utensils, Flag, 
-  ScrollText, Landmark, Siren, LayoutPanelLeft
+  LayoutDashboard, GitFork, BookOpen, Users, Image, Calendar,
+  Heart, Search, Settings, LogOut,
+  MessageSquare, Bell, Shield, FileText, Utensils, Flag,
+  ScrollText, Landmark, Siren, LayoutPanelLeft, Newspaper, History
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Sidebar({ onLinkClick }) {
-  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,6 +18,9 @@ export default function Sidebar({ onLinkClick }) {
     { name: 'Member Profiles', path: '/profiles', icon: Users },
     { name: 'Life Stories', path: '/life-story', icon: BookOpen },
     { name: 'Family Community', path: '/community', icon: Flag },
+    { name: 'Family Search', path: '/search', icon: Search },
+    { name: 'Family Feed', path: '/family-feed', icon: Newspaper },
+    { name: 'Family History', path: '/family-history', icon: History },
     { name: 'Photos & Videos', path: '/gallery', icon: Image },
     { name: 'Image Search', path: '/image-search', icon: Search },
     { name: 'Timeline', path: '/timeline', icon: ScrollText },
@@ -37,7 +37,7 @@ export default function Sidebar({ onLinkClick }) {
   ];
 
   // Only show Admin Dashboard if user is Super Admin
-  const isAdmin = CURRENT_USER.role === 'Super Admin' || CURRENT_USER.role === 'Family Founder';
+  const isAdmin = isFamilyAdmin();
   if (isAdmin) {
     menuItems.splice(1, 0, { name: 'Admin Dashboard', path: '/admin', icon: LayoutPanelLeft });
   }
@@ -94,8 +94,8 @@ export default function Sidebar({ onLinkClick }) {
         <nav className="flex-1 space-y-1 overflow-y-auto pr-2 custom-scrollbar">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            
+            const isActive = location.pathname === item.path || (item.path === '/profiles' && location.pathname.startsWith('/profile/'));
+
             return (
               <button
                 key={item.name}

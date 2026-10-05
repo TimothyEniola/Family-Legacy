@@ -1,27 +1,44 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFamily } from '../context/FamilyContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Flame, MessageSquare, Award, Calendar, Clock, Plus, Filter, Search } from 'lucide-react';
+import MemorialCandle from '../Components/ui/MemorialCandle';
 
 export default function MemorialPage() {
-  const { members, tributes, addTribute } = useFamily();
+  const { members, tributes, addTribute, candleCounts, lightCandle, addMember } = useFamily();
   const deceased = members.filter(m => m.status === 'Deceased');
   const [selectedDeceasedId, setSelectedDeceasedId] = useState(deceased[0]?.id || null);
   const [tributeText, setTributeText] = useState('');
-  const [candles, setCandles] = useState({
-    "robert-johnson": 42,
-    "mary-johnson": 38,
-  });
+  const [memberQuery, setMemberQuery] = useState('');
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newMemorialName, setNewMemorialName] = useState('');
+  const [newMemorialYear, setNewMemorialYear] = useState('');
+  const filteredDeceased = deceased.filter((member) => member.name.toLowerCase().includes(memberQuery.toLowerCase()));
 
   const activeDeceased = deceased.find(d => d.id === selectedDeceasedId) || deceased[0];
   const activeTributes = tributes[selectedDeceasedId] || [];
 
   const handleLightCandle = () => {
     if (!selectedDeceasedId) return;
-    setCandles(prev => ({
-      ...prev,
-      [selectedDeceasedId]: (prev[selectedDeceasedId] || 0) + 1
-    }));
+    lightCandle(selectedDeceasedId);
+  };
+
+  const handleCreateMemorial = (event) => {
+    event.preventDefault();
+    if (!newMemorialName.trim()) return;
+    const newMemberId = addMember({
+      name: newMemorialName.trim(),
+      role: 'Family member',
+      status: 'Deceased',
+      birthDate: newMemorialYear ? `${newMemorialYear}-01-01` : '',
+      deathDate: null,
+      birthPlace: 'Family archive',
+      bio: 'A cherished member of the family, remembered with love.'
+    });
+    setSelectedDeceasedId(newMemberId);
+    setNewMemorialName('');
+    setNewMemorialYear('');
+    setIsCreateOpen(false);
   };
 
   const handleSubmitTribute = (e) => {
@@ -40,7 +57,7 @@ export default function MemorialPage() {
           </h1>
           <p className="text-slate-500 dark:text-slate-400">A respectful space to honor and remember those who came before us.</p>
         </div>
-        <button className="px-6 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2 self-start md:self-auto">
+        <button type="button" onClick={() => setIsCreateOpen(true)} className="px-6 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 transition-all flex items-center gap-2 self-start md:self-auto">
           <Plus size={16} /> Create Memorial
         </button>
       </div>
@@ -54,7 +71,7 @@ export default function MemorialPage() {
               <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Search Ancestors</h3>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                <input type="text" placeholder="Find by name..." className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-transparent focus:border-primary outline-none text-xs transition-all" />
+                <input type="search" value={memberQuery} onChange={(event) => setMemberQuery(event.target.value)} placeholder="Find by name..." className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-transparent focus:border-primary outline-none text-xs transition-all" />
               </div>
             </div>
             
@@ -64,7 +81,7 @@ export default function MemorialPage() {
                 <Filter size={12} className="text-slate-300" />
               </div>
               <div className="flex flex-col gap-2">
-                {deceased.map(profile => {
+                {filteredDeceased.length ? filteredDeceased.map(profile => {
                   const isSelected = profile.id === selectedDeceasedId;
                   return (
                     <button 
@@ -89,7 +106,7 @@ export default function MemorialPage() {
                       </div>
                     </button>
                   );
-                })}
+                }) : <p className="rounded-xl bg-slate-50 p-3 text-xs text-slate-500 dark:bg-slate-900">No remembered profiles match this name.</p>}
               </div>
             </div>
           </div>
@@ -143,16 +160,16 @@ export default function MemorialPage() {
                         {activeDeceased.bio || "A beloved soul whose life remains a guiding light for our entire family branch. Rest in eternal peace."}
                       </p>
                       <div className="flex flex-wrap justify-center md:justify-start gap-6 pt-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-                        <span className="flex items-center gap-2"><Calendar size={14} className="text-primary" /> Born in {activeDeceased.birthPlace.split(',')[0]}</span>
-                        <span className="flex items-center gap-2"><Clock size={14} className="text-primary" /> {candles[activeDeceased.id] || 0} Candles Lit</span>
+                        <span className="flex items-center gap-2"><Calendar size={14} className="text-primary" /> Born in {(activeDeceased.birthPlace || 'Family archive').split(',')[0]}</span>
+                        <span className="flex items-center gap-2"><Clock size={14} className="text-primary" /> {candleCounts[activeDeceased.id] || 0} Candles Lit</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-10 pt-8 border-t border-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center shadow-inner">
-                        <Flame size={28} className="animate-pulse" />
+                      <div className="flex h-[5.5rem] w-14 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-500 shadow-inner">
+                        <MemorialCandle />
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-white">Virtual Memorial</h4>
@@ -246,6 +263,28 @@ export default function MemorialPage() {
           </AnimatePresence>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isCreateOpen && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <motion.button type="button" aria-label="Close create memorial dialog" initial={{ opacity: 0 }} animate={{ opacity: 0.55 }} exit={{ opacity: 0 }} onClick={() => setIsCreateOpen(false)} className="absolute inset-0 bg-black" />
+            <motion.section role="dialog" aria-modal="true" aria-labelledby="create-memorial-title" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} className="relative z-10 w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-[#111D29]">
+              <h2 id="create-memorial-title" className="text-xl font-bold text-slate-900 dark:text-white">Create a memorial</h2>
+              <p className="mt-1 text-xs text-slate-500">Add a remembered family member to the archive.</p>
+              <form onSubmit={handleCreateMemorial} className="mt-5 space-y-4">
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300" htmlFor="memorial-name">Full name</label>
+                <input id="memorial-name" required value={newMemorialName} onChange={(event) => setNewMemorialName(event.target.value)} className="-mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none focus:border-primary dark:border-slate-700 dark:bg-slate-900 dark:text-white" placeholder="Name to remember" />
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300" htmlFor="memorial-year">Birth year (optional)</label>
+                <input id="memorial-year" type="number" min="1800" max={new Date().getFullYear()} value={newMemorialYear} onChange={(event) => setNewMemorialYear(event.target.value)} className="-mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none focus:border-primary dark:border-slate-700 dark:bg-slate-900 dark:text-white" placeholder="e.g. 1945" />
+                <div className="flex justify-end gap-3 pt-2">
+                  <button type="button" onClick={() => setIsCreateOpen(false)} className="rounded-xl px-4 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Cancel</button>
+                  <button type="submit" className="rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-white hover:bg-primary-600">Save memorial</button>
+                </div>
+              </form>
+            </motion.section>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

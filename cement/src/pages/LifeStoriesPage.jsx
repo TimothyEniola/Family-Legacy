@@ -1,11 +1,9 @@
 
-import React, { useState } from 'react';
-import { useFamily } from '../context/FamilyContext';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, BookOpen, Volume2, Calendar, Award, Trash2, Play, Pause, Save, X, Image as ImageIcon } from 'lucide-react';
+import { BookOpen, Volume2, Calendar, Trash2, Play, Pause, Save, X, Image as ImageIcon } from 'lucide-react';
 export default function LifeStoryPage() {
-  const { activeMember } = useFamily();
-  
+
   // Custom mock diaries for demonstration
   const [diaries, setDiaries] = useState([
     { id: 1, title: 'My Childhood Days in Lagos', date: 'June 12, 2024', summary: 'Reflecting on the early years playing at the compound and learning carpenter crafts with father.', content: 'Our compound was always filled with the smell of fresh timber. Father was highly strict about measurements, but mother would sneak us candies when we got tired. Those were simple days filled with lessons that shaped my entire career path.', image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&w=200' },

@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useFamily } from '../context/FamilyContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, MapPin, User, Compass, UploadCloud, RefreshCw, AlertTriangle, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, MapPin, UploadCloud, RefreshCw, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export default function SearchPage() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { members, setActiveMemberId } = useFamily();
   
-  const [searchVal, setSearchVal] = useState('');
+  const searchVal = searchParams.get('q') || '';
   const [filterBirthPlace, setFilterBirthPlace] = useState('');
   const [activeSearchTab, setActiveSearchTab] = useState('text'); // text, face, match, missing
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const q = params.get('q');
-    if (q) {
-      setSearchVal(q);
-      setActiveSearchTab('text');
-    }
-  }, [location.search]);
+  const updateSearch = (value) => {
+    setSearchParams((previous) => {
+      const next = new URLSearchParams(previous);
+      if (value.trim()) next.set('q', value);
+      else next.delete('q');
+      return next;
+    }, { replace: true });
+  };
 
   // Text search filter logic
   const searchResults = members.filter(m => {
@@ -83,7 +82,7 @@ export default function SearchPage() {
                 <input
                   type="text"
                   value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
+                  onChange={(e) => updateSearch(e.target.value)}
                   placeholder="Search by name, role (e.g. David, Child, Grandfather)..."
                   className="w-full bg-transparent border-none outline-none text-xs text-slate-950 dark:text-white"
                 />

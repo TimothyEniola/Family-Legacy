@@ -1,0 +1,109 @@
+.memorial-candle {
+  --candle-wax: #f6e8ce;
+  --candle-shadow: #d2b98e;
+  --candle-flame: #f4511e;
+  position: relative;
+  display: inline-flex;
+  width: 56px;
+  height: 82px;
+  align-items: flex-end;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.memorial-candle__halo {
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 174 62 / 46%) 0, rgb(249 115 22 / 20%) 38%, transparent 74%);
+  filter: blur(5px);
+  transform: translateX(-50%);
+  animation: memorial-glow 2.3s ease-in-out infinite alternate;
+}
+
+.memorial-candle__flame {
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  left: 50%;
+  width: 18px;
+  height: 32px;
+  border-radius: 55% 45% 48% 52% / 68% 68% 32% 32%;
+  background: radial-gradient(ellipse at 48% 73%, #fff8be 0 9%, #ffd35a 28%, #ff9828 62%, var(--candle-flame) 100%);
+  filter: drop-shadow(0 0 5px rgb(255 146 41 / 78%));
+  transform: translateX(-50%) rotate(-2deg);
+  transform-origin: 50% 100%;
+  animation: memorial-flicker 1.65s ease-in-out infinite alternate;
+}
+
+.memorial-candle__flame span {
+  position: absolute;
+  inset: 9px 5px 4px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fffbd6, #fff0a5 70%, transparent);
+  filter: blur(1px);
+}
+
+.memorial-candle__wick {
+  position: absolute;
+  z-index: 3;
+  bottom: 53px;
+  left: 50%;
+  width: 3px;
+  height: 9px;
+  border-radius: 3px 3px 0 0;
+  background: #39271f;
+  transform: translateX(-50%);
+}
+
+.memorial-candle__wax {
+  position: relative;
+  z-index: 1;
+  width: 27px;
+  height: 48px;
+  border: 1px solid rgb(129 88 41 / 16%);
+  border-radius: 7px 7px 5px 5px;
+  background: linear-gradient(90deg, #d9c49f 0%, var(--candle-wax) 17%, #fff8e9 48%, #ead8b7 100%);
+  box-shadow: inset 2px 0 3px rgb(255 255 255 / 78%), inset -3px 0 5px rgb(127 84 35 / 14%), 0 7px 12px rgb(0 0 0 / 24%);
+}
+
+.memorial-candle__wax::before {
+  position: absolute;
+  top: -3px;
+  left: -1px;
+  width: 27px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fffaf0, #ead7b4);
+  content: '';
+}
+
+.memorial-candle__base {
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  width: 39px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #dfcda9, var(--candle-shadow));
+  box-shadow: 0 5px 10px rgb(0 0 0 / 28%);
+}
+
+@keyframes memorial-flicker {
+  0%, 100% { opacity: .96; transform: translateX(-50%) rotate(-3deg) scale(.98, 1); }
+  35% { opacity: 1; transform: translateX(-48%) rotate(3deg) scale(1.04, .97); }
+  70% { opacity: .89; transform: translateX(-53%) rotate(-1deg) scale(.95, 1.04); }
+}
+
+@keyframes memorial-glow {
+  from { opacity: .72; transform: translateX(-50%) scale(.92); }
+  to { opacity: 1; transform: translateX(-50%) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memorial-candle__flame, .memorial-candle__halo { animation: none; }
+}

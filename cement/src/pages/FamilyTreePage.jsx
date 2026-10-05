@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFamily } from '../context/FamilyContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ZoomIn, ZoomOut, Maximize2, GitFork, UserPlus, Heart, Eye } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize2, GitFork, UserPlus, Heart } from 'lucide-react';
 export default function FamilyTreePage() {
   const navigate = useNavigate();
   const { members, setActiveMemberId, addMember } = useFamily();
@@ -62,26 +62,6 @@ export default function FamilyTreePage() {
     setNewMemberName('');
     setIsAddModalOpen(false);
   };
-  // Define generation coordinates for Hierarchical SVG lines
-  // These coords align with our visual CSS tree rows below.
-  const svgLines = [
-    // Robert & Mary to William
-    { fromX: 250, fromY: 60, toX: 250, toY: 130 },
-    // William & Linda to children
-    { fromX: 250, fromY: 170, toX: 250, toY: 210 },
-    { fromX: 100, fromY: 210, toX: 400, toY: 210 }, // Horizontal bridge
-    // Downwards to David, James, Sarah, Michael
-    { fromX: 100, fromY: 210, toX: 100, toY: 250 }, // To David
-    { fromX: 200, fromY: 210, toX: 200, toY: 250 }, // To James
-    { fromX: 300, fromY: 210, toX: 300, toY: 250 }, // To Sarah
-    { fromX: 400, fromY: 210, toX: 400, toY: 250 }, // To Michael
-    // David & Helen to Children
-    { fromX: 100, fromY: 290, toX: 100, toY: 340 },
-    { fromX: 0, fromY: 340, toX: 200, toY: 340 }, // Horizontal bridge for children
-    { fromX: 0, fromY: 340, toX: 0, toY: 380 },   // To Emma
-    { fromX: 100, fromY: 340, toX: 100, toY: 380 }, // To Liam
-    { fromX: 200, fromY: 340, toX: 200, toY: 380 }  // To Olivia
-  ];
   return (
     <div className="h-[calc(100vh-10rem)] flex flex-col relative select-none overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-brand-darkSurface shadow-sm">
       

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFamily } from '../context/FamilyContext';
 import { useNavigate } from 'react-router-dom';
 import { Users, Heart, MapPin, ArrowRight, Filter, Search } from 'lucide-react';

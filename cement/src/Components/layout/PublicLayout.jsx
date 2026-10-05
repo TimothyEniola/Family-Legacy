@@ -175,13 +175,13 @@ export default function PublicLayout() {
             <h4 className="mb-6 text-[11px] font-black uppercase tracking-widest text-slate-400">Legal</h4>
             <ul className="space-y-4 text-sm font-bold text-slate-600 dark:text-slate-300">
               <li>
-                <button className="hover:text-primary transition-colors" type="button">Privacy Policy</button>
+                <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
               </li>
               <li>
-                <button className="hover:text-primary transition-colors" type="button">Terms of Service</button>
+                <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
               </li>
               <li>
-                <button className="hover:text-primary transition-colors" type="button">Contact</button>
+                <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>
               </li>
             </ul>
           </div>

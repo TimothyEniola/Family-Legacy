@@ -1,140 +1,35 @@
-import React from 'react';
-import { Calendar, MapPin, Clock, Users, Plus, ArrowRight, Gift, Utensils } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Calendar, MapPin, Clock, Plus, ArrowRight, Gift, Utensils, X, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useFamily } from '../context/FamilyContext';
+
+const blankEvent = { title: '', date: '', time: '', location: '', category: 'Family Reunion', details: '' };
+const categoryColors = { Birthday: 'border-pink-500', Wedding: 'border-rose-500', 'Family Reunion': 'border-orange-500', Reunion: 'border-orange-500', Memorial: 'border-violet-500', General: 'border-blue-500' };
+const defaultImage = 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600';
 
 export default function EventsPage() {
-  const events = [
-    {
-      id: 1,
-      title: 'Annual Family Reunion',
-      date: 'July 20, 2026',
-      time: '10:00 AM',
-      location: 'Johnson Compound, Lagos',
-      attendees: 42,
-      category: 'Reunion',
-      image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600',
-      color: 'border-orange-500'
-    },
-    {
-      id: 2,
-      title: 'Grandma’s 80th Celebration',
-      date: 'August 12, 2026',
-      time: '4:00 PM',
-      location: 'Grand Ballroom, Victoria Island',
-      attendees: 120,
-      category: 'Birthday',
-      image: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?auto=format&fit=crop&q=80&w=600',
-      color: 'border-blue-500'
-    },
-    {
-      id: 3,
-      title: 'Summer Heritage Picnic',
-      date: 'June 25, 2026',
-      time: '12:00 PM',
-      location: 'Freedom Park, Lagos',
-      attendees: 28,
-      category: 'Picnic',
-      image: 'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&q=80&w=600',
-      color: 'border-green-500'
-    }
-  ];
+  const { events, addEvent } = useFamily();
+  const [createOpen, setCreateOpen] = useState(false);
+  const [draft, setDraft] = useState(blankEvent);
+  const [status, setStatus] = useState('');
+  const orderedEvents = useMemo(() => [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()), [events]);
+
+  const handleCreate = (event) => {
+    event.preventDefault();
+    const record = addEvent({ ...draft, date: new Date(`${draft.date}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }), time: draft.time || 'Time to be confirmed', attendees: 0, image: '' });
+    setStatus(`${record.title} was added to the family calendar.`);
+    setDraft(blankEvent);
+    setCreateOpen(false);
+  };
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <Calendar className="text-primary" /> Family Events
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400">Keep track of upcoming gatherings and celebrations.</p>
-        </div>
-        <button className="px-6 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 self-start sm:self-auto">
-          <Plus size={16} /> Create Event
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-        {events.map((event, idx) => (
-          <motion.div
-            key={event.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className={`bg-white dark:bg-[#111D29] rounded-[2.5rem] border-2 ${event.color} border-opacity-10 dark:border-opacity-20 overflow-hidden shadow-premium group hover:shadow-2xl transition-all flex flex-col`}
-          >
-            <div className="h-48 relative overflow-hidden">
-              <img src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute top-4 left-4 px-4 py-1.5 bg-white/90 dark:bg-[#111D29]/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-primary shadow-lg">
-                {event.category}
-              </div>
-            </div>
-            <div className="p-8 flex-1 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight group-hover:text-primary transition-colors">
-                  {event.title}
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
-                    <Calendar size={16} className="text-primary" />
-                    <span className="text-xs font-bold">{event.date}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
-                    <Clock size={16} className="text-primary" />
-                    <span className="text-xs font-bold">{event.time}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
-                    <MapPin size={16} className="text-primary" />
-                    <span className="text-xs font-bold truncate">{event.location}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map(i => (
-                      <img key={i} src={`https://i.pravatar.cc/100?u=evt${event.id}${i}`} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#111D29]" alt="Attendee" />
-                    ))}
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400">+{event.attendees - 3} joining</span>
-                </div>
-                <button className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
-                  <ArrowRight size={18} />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-8 pt-6">
-        <div className="bg-slate-900 p-8 rounded-[2.5rem] relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent"></div>
-          <div className="relative z-10 space-y-4 text-white">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-              <Gift size={24} className="text-primary" />
-            </div>
-            <h4 className="text-2xl font-bold tracking-tight">Birthdays & Anniversaries</h4>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm">Never miss a special day in the family. Sync your calendar to get automated reminders for ancestral birthdays.</p>
-            <button className="px-6 py-3 bg-white text-slate-900 text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl hover:scale-105 transition-all mt-4">
-              Sync Calendar
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-[#111D29] p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 relative overflow-hidden group shadow-premium">
-          <div className="relative z-10 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-500/5 flex items-center justify-center">
-              <Utensils size={24} className="text-primary" />
-            </div>
-            <h4 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Catering & Traditions</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">Planning a feast? Check our family recipe vault to ensure the traditional menu is preserved for the next event.</p>
-            <button className="px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-sm hover:scale-105 transition-all mt-4">
-              View Recipes
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-8 pb-10">
+      <header className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><div className="mb-2 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary"><Calendar size={13} /> Shared family calendar</div><h1 className="text-3xl font-black text-slate-900 dark:text-white">Family Events</h1><p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Gatherings, birthdays, weddings, and important family dates.</p></div><button type="button" onClick={() => { setStatus(''); setCreateOpen(true); }} className="inline-flex items-center gap-2 self-start rounded-2xl bg-primary px-5 py-3 text-xs font-black uppercase tracking-wider text-white shadow-xl shadow-primary/20 transition hover:scale-[1.02] sm:self-auto"><Plus size={16} /> Create event</button></header>
+      {status && <p role="status" className="rounded-xl bg-green-50 px-4 py-3 text-xs font-semibold text-green-800 dark:bg-green-950/30 dark:text-green-300">{status}</p>}
+      {orderedEvents.length ? <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{orderedEvents.map((event, index) => <motion.article key={event.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * .04, .2) }} className={`flex overflow-hidden rounded-3xl border border-slate-100 border-l-4 ${categoryColors[event.category] || 'border-slate-300'} bg-white shadow-premium dark:border-slate-800 dark:bg-[#111D29]`}><div className="flex w-full flex-col"><div className="relative h-40 overflow-hidden bg-gradient-to-br from-orange-200 via-orange-100 to-slate-100 dark:from-orange-950 dark:via-slate-900 dark:to-[#111D29]">{event.image && <img src={event.image || defaultImage} alt="" className="h-full w-full object-cover" />}<span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-primary backdrop-blur">{event.category || 'Family event'}</span></div><div className="flex flex-1 flex-col p-5"><h2 className="text-lg font-black text-slate-900 dark:text-white">{event.title}</h2>{event.details && <p className="mt-2 line-clamp-2 text-xs text-slate-500">{event.details}</p>}<div className="mt-4 space-y-2.5 text-xs text-slate-500 dark:text-slate-400"><p className="flex items-center gap-2"><Calendar size={14} className="text-primary" />{event.date}</p><p className="flex items-center gap-2"><Clock size={14} className="text-primary" />{event.time || 'Time to be confirmed'}</p><p className="flex items-center gap-2"><MapPin size={14} className="text-primary" />{event.location || 'Location to be confirmed'}</p></div><div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800"><span className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400"><Users size={13} /> {event.attendees || 0} attending</span>{event.familyId && <span className="max-w-32 truncate text-[9px] font-bold text-primary">{event.familyId === 'all' ? 'All families' : 'Family event'}</span>}</div></div></div></motion.article>)}</div> : <section className="rounded-3xl border border-dashed border-slate-200 p-14 text-center dark:border-slate-800"><Calendar size={30} className="mx-auto text-slate-300" /><h2 className="mt-3 text-sm font-bold text-slate-800 dark:text-white">No family events yet</h2><p className="mt-1 text-xs text-slate-500">Create an event or publish an announcement with a date.</p><button type="button" onClick={() => setCreateOpen(true)} className="mt-4 text-xs font-bold text-primary">Create the first event</button></section>}
+      <div className="grid gap-5 md:grid-cols-2"><section className="rounded-3xl bg-slate-900 p-6 text-white"><Gift size={24} className="text-primary" /><h2 className="mt-4 text-xl font-bold">Birthdays & anniversaries</h2><p className="mt-2 text-sm leading-relaxed text-slate-400">Family administrators can post birthday and wedding updates from the admin dashboard and add their celebration date to this calendar.</p><Link to="/admin" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-primary hover:underline">Open admin announcements <ArrowRight size={14} /></Link></section><section className="rounded-3xl border border-slate-100 bg-white p-6 dark:border-slate-800 dark:bg-[#111D29]"><Utensils size={24} className="text-primary" /><h2 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">Catering & traditions</h2><p className="mt-2 text-sm leading-relaxed text-slate-500">Planning a gathering? Bring a favorite family dish to keep the traditions alive.</p><Link to="/recipes" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-primary hover:underline">Browse family recipes <ArrowRight size={14} /></Link></section></div>
+      {createOpen && <div className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto bg-slate-950/65 p-4 backdrop-blur-sm" onMouseDown={(event) => { if (event.target === event.currentTarget) setCreateOpen(false); }}><section role="dialog" aria-modal="true" aria-labelledby="create-event-title" className="my-auto w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-[#111D29]"><div className="flex items-start justify-between"><div><h2 id="create-event-title" className="text-xl font-black text-slate-900 dark:text-white">Create a family event</h2><p className="mt-1 text-xs text-slate-500">Add it to the shared family calendar.</p></div><button type="button" onClick={() => setCreateOpen(false)} aria-label="Close event form" className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"><X size={18} /></button></div><form onSubmit={handleCreate} className="mt-5 space-y-4"><div><label htmlFor="event-title" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Event title</label><input id="event-title" required maxLength={100} value={draft.title} onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-slate-700 dark:bg-slate-900 dark:text-white" /></div><div className="grid grid-cols-2 gap-3"><div><label htmlFor="event-category" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Category</label><select id="event-category" value={draft.category} onChange={(event) => setDraft((current) => ({ ...current, category: event.target.value }))} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white">{['Family Reunion', 'Birthday', 'Wedding', 'Memorial', 'General'].map((value) => <option key={value}>{value}</option>)}</select></div><div><label htmlFor="event-date" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Date</label><input id="event-date" type="date" required value={draft.date} onChange={(event) => setDraft((current) => ({ ...current, date: event.target.value }))} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" /></div></div><div className="grid grid-cols-2 gap-3"><div><label htmlFor="event-time" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Time</label><input id="event-time" type="time" value={draft.time} onChange={(event) => setDraft((current) => ({ ...current, time: event.target.value }))} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" /></div><div><label htmlFor="event-location" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Location</label><input id="event-location" value={draft.location} onChange={(event) => setDraft((current) => ({ ...current, location: event.target.value }))} placeholder="Lagos or Online" className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" /></div></div><div><label htmlFor="event-details" className="mb-1 block text-xs font-bold text-slate-600 dark:text-slate-300">Details <span className="font-normal text-slate-400">(optional)</span></label><textarea id="event-details" rows={3} maxLength={500} value={draft.details} onChange={(event) => setDraft((current) => ({ ...current, details: event.target.value }))} className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-slate-700 dark:bg-slate-900 dark:text-white" /></div><div className="flex justify-end gap-2 pt-2"><button type="button" onClick={() => setCreateOpen(false)} className="rounded-xl px-4 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Cancel</button><button type="submit" className="rounded-xl bg-primary px-5 py-2.5 text-xs font-black text-white">Save event</button></div></form></section></div>}
     </div>
   );
 }

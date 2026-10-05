@@ -1,6 +1,5 @@
-import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { GitFork, Mail, ArrowLeft, KeyRound, ShieldCheck } from 'lucide-react';
+import { Mail, ArrowLeft, KeyRound } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ForgotPasswordPage() {

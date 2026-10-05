@@ -1,6 +1,5 @@
-import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lock, ArrowLeft, KeyRound, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Lock, ArrowLeft, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ResetPasswordPage() {

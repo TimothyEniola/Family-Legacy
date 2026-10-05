@@ -175,10 +175,10 @@
 
 // export default SettingsPage;
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { CURRENT_USER } from '../data/mockData';
-import { Bell, Lock, Eye, Sun, Moon, LogOut, ShieldAlert, KeyRound, Globe, Save } from 'lucide-react';
+import { Sun, Moon, LogOut, Save } from 'lucide-react';
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   
@@ -186,7 +186,6 @@ export default function SettingsPage() {
   const [notifEmail, setNotifEmail] = useState(true);
   const [notifBirthdays, setNotifBirthdays] = useState(true);
   const [profilePrivate, setProfilePrivate] = useState(false);
-  const [twoFactor, setTwoFactor] = useState(false);
   const [username, setUsername] = useState(CURRENT_USER.name);
   const [userEmail, setUserEmail] = useState(CURRENT_USER.email);
   const handleSaveProfile = (e) => {

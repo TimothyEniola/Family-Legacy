@@ -1,5 +1,4 @@
-import React from 'react';
-import { Siren, Phone, ShieldAlert, Heart, MapPin, Plus, ArrowRight, UserPlus, AlertTriangle } from 'lucide-react';
+import { Siren, Phone, ShieldAlert, Heart, MapPin, ArrowRight, UserPlus, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function EmergencyPage() {

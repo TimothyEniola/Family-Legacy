@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Upload, Image as ImageIcon, X, Loader2, Camera } from 'lucide-react';
+import { useState } from 'react';
+import { Upload, Image as ImageIcon, X, Loader2, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ImageSearchPage() {

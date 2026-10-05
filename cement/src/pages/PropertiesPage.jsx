@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, MapPin, Building, Key, Plus, ArrowRight, Home, LandPlot } from 'lucide-react';
 import { motion } from 'framer-motion';
 

@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Compass, Calendar, MapPin, Archive, FileText, ArrowRight, Quote } from 'lucide-react';
+import { Compass, Archive, FileText, ArrowRight, Quote } from 'lucide-react';
 export default function HistoryPage() {
   const migrations = [
     { year: '1944', title: 'Immigration to Lagos, Nigeria', desc: 'Robert Johnson left Edinburgh, Scotland during the height of WWII and settled in Lagos, establishing the carpentry firm.', from: 'Edinburgh, Scotland', to: 'Lagos, Nigeria' },

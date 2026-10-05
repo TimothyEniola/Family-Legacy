@@ -1,99 +1,29 @@
-import React from 'react';
-import { Bell, Megaphone, Calendar, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Bell, CalendarDays, Heart, Baby, Users, ShieldAlert, Sparkles, Megaphone, Search, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { useFamily } from '../context/FamilyContext';
+
+const typeIcons = { 'Birth / New Baby': Baby, 'New Baby': Baby, Birthday: CalendarDays, Wedding: Heart, 'Missing Person': Search, 'Family Reunion': Users, Reunion: Users, 'Emergency Notice': ShieldAlert, Memorial: Heart, General: Megaphone, Event: CalendarDays, Security: ShieldAlert, Milestone: Sparkles };
 
 export default function AnnouncementsPage() {
-  const announcements = [
-    {
-      id: 1,
-      title: 'Family Reunion 2026',
-      date: 'June 15, 2026',
-      category: 'Event',
-      content: 'We are thrilled to announce that the biennial Johnson family reunion will be held in Lagos this year. Mark your calendars for July 20-25!',
-      priority: 'High',
-      icon: Calendar,
-      color: 'bg-orange-500'
-    },
-    {
-      id: 2,
-      title: 'New Digital Archive Security',
-      date: 'June 10, 2026',
-      category: 'Security',
-      content: 'Our family heritage vault has been upgraded with end-to-end encryption. Your private records are now more secure than ever.',
-      priority: 'Medium',
-      icon: ShieldCheck,
-      color: 'bg-blue-500'
-    },
-    {
-      id: 3,
-      title: 'Legacy Book Published',
-      date: 'June 05, 2026',
-      category: 'Milestone',
-      content: 'The first volume of the "Johnson Family Chronicle" is now available for digital viewing in the documents section.',
-      priority: 'Normal',
-      icon: Sparkles,
-      color: 'bg-purple-500'
-    }
-  ];
+  const { announcements } = useFamily();
+  const [typeFilter, setTypeFilter] = useState('All');
+  const types = useMemo(() => ['All', ...new Set(announcements.map((announcement) => announcement.type || announcement.category || 'General'))], [announcements]);
+  const visibleAnnouncements = useMemo(() => [...announcements]
+    .filter((announcement) => typeFilter === 'All' || (announcement.type || announcement.category || 'General') === typeFilter)
+    .sort((a, b) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime()), [announcements, typeFilter]);
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-          <Bell className="text-primary" /> Family Announcements
-        </h1>
-        <p className="text-slate-500 dark:text-slate-400">Stay updated with the latest news from your family branches.</p>
-      </div>
-
-      <div className="grid gap-6">
-        {announcements.map((ann, idx) => (
-          <motion.div
-            key={ann.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: idx * 0.1 }}
-            className="bg-white dark:bg-[#111D29] p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-premium flex flex-col md:flex-row gap-6 items-start group hover:border-primary/30 transition-all"
-          >
-            <div className={`w-14 h-14 rounded-2xl ${ann.color} flex items-center justify-center text-white shadow-lg shrink-0 group-hover:scale-110 transition-transform`}>
-              <ann.icon size={28} />
-            </div>
-            <div className="flex-1 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{ann.category}</span>
-                  <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                  <span className="text-[10px] font-bold text-slate-400">{ann.date}</span>
-                </div>
-                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest 
-                  ${ann.priority === 'High' ? 'bg-red-500/10 text-red-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}
-                `}>
-                  {ann.priority} Priority
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{ann.title}</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                {ann.content}
-              </p>
-              <button className="text-xs font-bold text-primary flex items-center gap-2 hover:underline">
-                Read full announcement <ArrowRight size={14} />
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="p-8 rounded-[2.5rem] bg-slate-50 dark:bg-slate-900/50 border border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-white dark:bg-[#111D29] flex items-center justify-center shadow-sm">
-          <Megaphone size={24} className="text-slate-400" />
-        </div>
-        <div>
-          <h4 className="text-lg font-bold text-slate-800 dark:text-white">Have news to share?</h4>
-          <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto mt-1">Submit an announcement to be reviewed by the family archivist.</p>
-        </div>
-        <button className="px-8 py-3 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 transition-all">
-          Broadcast News
-        </button>
-      </div>
+    <div className="mx-auto max-w-5xl space-y-7 pb-10">
+      <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><div className="mb-2 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary"><Bell size={13} /> Official family updates</div><h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Family Announcements</h1><p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Births, weddings, reunions, and important notices from family administrators.</p></div><Link to="/chat?channel=announcements" className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:border-primary hover:text-primary dark:border-slate-800 dark:bg-[#111D29] dark:text-slate-200">Open group announcements</Link></header>
+      <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Filter announcements">{types.map((type) => <button type="button" key={type} aria-pressed={typeFilter === type} onClick={() => setTypeFilter(type)} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition ${typeFilter === type ? 'bg-primary text-white' : 'bg-white text-slate-500 hover:text-primary dark:bg-[#111D29] dark:text-slate-300'}`}>{type}</button>)}</div>
+      {visibleAnnouncements.length ? <div className="grid gap-4">{visibleAnnouncements.map((announcement, index) => {
+        const type = announcement.type || announcement.category || 'General';
+        const Icon = typeIcons[type] || Megaphone;
+        return <motion.article key={announcement.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(index * .035, .2) }} className="rounded-3xl border border-slate-100 bg-white p-5 shadow-premium transition hover:border-primary/30 dark:border-slate-800 dark:bg-[#111D29] sm:p-6"><div className="flex items-start gap-4"><span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Icon size={22} /></span><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-black uppercase tracking-widest text-primary">{type}</span><span className="text-slate-300">·</span><span className="text-[10px] font-semibold text-slate-400">{announcement.familyName || 'Johnson Family'}</span><span className={`ml-auto rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-wider ${announcement.priority === 'High' ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300'}`}>{announcement.priority || 'Normal'} priority</span></div><h2 className="mt-2 text-lg font-black text-slate-900 dark:text-white">{announcement.title}</h2><p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-slate-600 dark:text-slate-300">{announcement.content}</p><div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-slate-100 pt-3 text-[10px] text-slate-400 dark:border-slate-800"><span>{announcement.author ? `Posted by ${announcement.author}` : 'Posted by family administration'}</span><time>{announcement.date}</time>{announcement.eventDate && <span className="inline-flex items-center gap-1 text-primary"><CalendarDays size={12} /> {announcement.eventDate}</span>}</div></div></div></motion.article>;
+      })}</div> : <section className="rounded-3xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center dark:border-slate-800 dark:bg-[#111D29]"><AlertTriangle size={28} className="mx-auto text-slate-300" /><h2 className="mt-3 text-sm font-bold text-slate-800 dark:text-white">No announcements in this category</h2><p className="mt-1 text-xs text-slate-500">Try another filter or check back later.</p><button type="button" onClick={() => setTypeFilter('All')} className="mt-4 text-xs font-bold text-primary hover:underline">Show all updates</button></section>}
+      <section className="flex flex-col items-center gap-3 rounded-3xl bg-slate-900 px-6 py-7 text-center text-white sm:flex-row sm:justify-between sm:text-left"><div><h2 className="text-sm font-bold">Have official news to share?</h2><p className="mt-1 text-xs text-slate-400">Family administrators publish announcements through the admin dashboard.</p></div><Link to="/admin" className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-black text-white hover:bg-primary-600">Go to admin dashboard <Megaphone size={14} /></Link></section>
     </div>
   );
 }
